@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Priyanka G — .NET Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   ROOT & RESET
+═══════════════════════════════════════════ */
+:root {
+  --bg:       #1c2333;
+  --bg2:      #212a3e;
+  --bg3:      #263044;
+  --surface:  #2c3a52;
+  --border:   #354662;
+  --teal:     #00e5c4;
+  --teal2:    #00b09b;
+  --amber:    #f0a500;
+  --text:     #e8eaf0;
+  --muted:    #8fa0bc;
+  --dim:      #4a5f80;
+  --white:    #ffffff;
+  --font-display: 'Syne', sans-serif;
+  --font-mono:    'IBM Plex Mono', monospace;
+  --font-serif:   'Lora', serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-display);
+  overflow-x: hidden;
+  cursor: none;
+}
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+
+/* ═══════════════════════════════════════════
+   CUSTOM CURSOR
+═══════════════════════════════════════════ */
+.cursor {
+  position: fixed; width: 10px; height: 10px;
+  background: var(--teal); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: transform 0.1s, width 0.2s, height 0.2s, opacity 0.2s;
+  mix-blend-mode: screen;
+}
+.cursor-ring {
+  position: fixed; width: 36px; height: 36px;
+  border: 1.5px solid var(--teal); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%,-50%);
+  transition: transform 0.18s ease, width 0.25s, height 0.25s, opacity 0.25s;
+  opacity: 0.5;
+}
+body:hover .cursor { opacity: 1; }
+
+/* ═══════════════════════════════════════════
+   GRID BACKGROUND
+═══════════════════════════════════════════ */
+.grid-bg {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    linear-gradient(rgba(0,229,196,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,196,0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.grid-bg::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,229,196,0.04) 0%, transparent 70%);
+}
+
+/* ═══════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 1.4rem 3rem;
+  display: flex; align-items: center; justify-content: space-between;
+  backdrop-filter: blur(16px);
+  background: rgba(10,11,14,0.7);
+  border-bottom: 1px solid rgba(0,229,196,0.06);
+  transition: border-color 0.3s;
+}
+nav.scrolled { border-bottom-color: rgba(0,229,196,0.15); }
+.nav-logo {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--teal);
+  letter-spacing: 0.08em;
+}
+.nav-logo span { color: var(--muted); }
+.nav-links { display: flex; gap: 2.5rem; list-style: none; }
+.nav-links a {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: color 0.2s;
+  position: relative;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute; bottom: -3px; left: 0; right: 0;
+  height: 1px; background: var(--teal);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.25s ease;
+}
+.nav-links a:hover { color: var(--teal); }
+.nav-links a:hover::after { transform: scaleX(1); }
+.nav-cta {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.55rem 1.3rem;
+  border: 1px solid var(--teal);
+  color: var(--teal);
+  border-radius: 2px;
+  transition: background 0.2s, color 0.2s;
+}
+.nav-cta:hover { background: var(--teal); color: var(--bg); }
+
+/* ═══════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════ */
+.hero {
+  position: relative; min-height: 100vh;
+  display: flex; align-items: center;
+  padding: 7rem 3rem 4rem;
+  z-index: 1;
+  overflow: hidden;
+}
+.hero-bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+}
+.orb1 { width: 500px; height: 500px; top: -100px; right: -100px; background: rgba(0,229,196,0.07); }
+.orb2 { width: 350px; height: 350px; bottom: 0; left: -80px; background: rgba(240,165,0,0.05); }
+
+.hero-inner { max-width: 1100px; margin: 0 auto; width: 100%; }
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 2rem;
+  opacity: 0; animation: fadeUp 0.7s ease 0.2s both;
+}
+.hero-eyebrow::before {
+  content: ''; display: inline-block;
+  width: 40px; height: 1px; background: var(--teal);
+}
+.hero-name {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: var(--white);
+  margin-bottom: 1.2rem;
+  opacity: 0; animation: fadeUp 0.7s ease 0.35s both;
+}
+.hero-name .accent { color: var(--teal); }
+.hero-title {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--muted);
+  margin-bottom: 2rem;
+  opacity: 0; animation: fadeUp 0.7s ease 0.5s both;
+  min-height: 1.5em;
+}
+.hero-title .typed { color: var(--amber); }
+.cursor-blink {
+  display: inline-block;
+  width: 2px; height: 1em;
+  background: var(--teal);
+  margin-left: 2px;
+  animation: blink 1s step-end infinite;
+  vertical-align: middle;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+.hero-desc {
+  max-width: 520px;
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--muted);
+  margin-bottom: 3rem;
+  opacity: 0; animation: fadeUp 0.7s ease 0.65s both;
+}
+.hero-actions {
+  display: flex; gap: 1rem; flex-wrap: wrap;
+  opacity: 0; animation: fadeUp 0.7s ease 0.8s both;
+}
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  padding: 0.85rem 2rem;
+  background: var(--teal);
+  color: var(--bg);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  font-weight: 500;
+  transition: background 0.2s, transform 0.2s;
+}
+.btn-primary:hover { background: var(--teal2); transform: translateY(-2px); }
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  padding: 0.85rem 2rem;
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  transition: border-color 0.2s, color 0.2s, transform 0.2s;
+}
+.btn-secondary:hover { border-color: var(--teal); color: var(--teal); transform: translateY(-2px); }
+
+.hero-stats {
+  position: absolute; right: 3rem; top: 50%;
+  transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 2rem;
+  opacity: 0; animation: fadeLeft 0.7s ease 1s both;
+}
+.hero-stat {
+  text-align: right;
+  border-right: 2px solid var(--teal);
+  padding-right: 1.2rem;
+}
+.stat-num {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1;
+}
+.stat-lbl {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 0.2rem;
+}
+
+/* Scroll indicator */
+.scroll-hint {
+  position: absolute; bottom: 2.5rem; left: 50%;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  opacity: 0; animation: fadeUp 0.7s ease 1.2s both;
+}
+.scroll-hint span {
+  font-family: var(--font-mono); font-size: 0.6rem;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--dim);
+}
+.scroll-line {
+  width: 1px; height: 50px;
+  background: linear-gradient(to bottom, var(--teal), transparent);
+  animation: scrollLine 1.8s ease-in-out infinite;
+}
+@keyframes scrollLine {
+  0%   { transform: scaleY(0) translateY(-50%); opacity: 1; }
+  100% { transform: scaleY(1) translateY(0); opacity: 0; }
+}
+
+/* ═══════════════════════════════════════════
+   SECTIONS COMMON
+═══════════════════════════════════════════ */
+.section {
+  position: relative; z-index: 1;
+  padding: 6rem 3rem;
+  max-width: 1100px; margin: 0 auto;
+}
+.section-full { max-width: 100%; padding-left: 0; padding-right: 0; }
+.section-full .section-inner { max-width: 1100px; margin: 0 auto; padding: 0 3rem; }
+
+.section-label {
+  display: inline-flex; align-items: center; gap: 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 1rem;
+}
+.section-label::before {
+  content: '//'; color: var(--dim);
+}
+.section-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--white);
+  margin-bottom: 3rem;
+}
+.section-title .teal { color: var(--teal); }
+
+/* Reveal animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ═══════════════════════════════════════════
+   ABOUT STRIP
+═══════════════════════════════════════════ */
+.about-strip {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 5rem;
+  align-items: center;
+}
+.about-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--teal);
+  border: 1px solid rgba(0,229,196,0.3);
+  border-radius: 2px;
+  padding: 0.25rem 0.6rem;
+  margin-bottom: 1.2rem;
+}
+.about-heading {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--white);
+  margin-bottom: 1.5rem;
+}
+.about-body {
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  line-height: 1.85;
+  color: var(--muted);
+}
+.about-body p + p { margin-top: 1rem; }
+.about-meta { display: flex; flex-direction: column; gap: 1.5rem; }
+.meta-item {
+  display: flex; align-items: flex-start; gap: 1rem;
+  padding: 1.2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  transition: border-color 0.25s;
+}
+.meta-item:hover { border-color: var(--teal); }
+.meta-icon {
+  width: 36px; height: 36px; flex-shrink: 0;
+  background: rgba(0,229,196,0.08);
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+}
+.meta-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 0.2rem;
+}
+.meta-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ═══════════════════════════════════════════
+   SKILLS
+═══════════════════════════════════════════ */
+.skills-bg { background: var(--bg); }
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.2rem;
+}
+.skill-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.6rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.25s, transform 0.25s;
+}
+.skill-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--teal), transparent);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.35s ease;
+}
+.skill-card:hover { border-color: rgba(0,229,196,0.3); transform: translateY(-3px); }
+.skill-card:hover::before { transform: scaleX(1); }
+.skill-card-icon { font-size: 1.5rem; margin-bottom: 0.8rem; }
+.skill-card-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 1rem;
+}
+.skill-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.tag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  color: var(--teal);
+  background: rgba(0,229,196,0.06);
+  border: 1px solid rgba(0,229,196,0.15);
+  border-radius: 2px;
+  padding: 0.2rem 0.55rem;
+}
+.tag.amber {
+  color: var(--amber);
+  background: rgba(240,165,0,0.06);
+  border-color: rgba(240,165,0,0.15);
+}
+
+/* ═══════════════════════════════════════════
+   EXPERIENCE
+═══════════════════════════════════════════ */
+.exp-bg {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.timeline { position: relative; }
+.timeline::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--teal), var(--border) 80%, transparent);
+}
+.exp-item {
+  position: relative;
+  padding: 0 0 3.5rem 2.5rem;
+}
+.exp-item:last-child { padding-bottom: 0; }
+.exp-dot {
+  position: absolute; left: -5px; top: 0.3rem;
+  width: 11px; height: 11px;
+  border-radius: 50%;
+  background: var(--bg2);
+  border: 2px solid var(--teal);
+  transition: background 0.2s, transform 0.2s;
+}
+.exp-item:hover .exp-dot { background: var(--teal); transform: scale(1.3); }
+.exp-period {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 0.5rem;
+}
+.exp-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.2rem;
+}
+.exp-company {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--amber);
+  margin-bottom: 0.6rem;
+}
+.exp-project {
+  font-family: var(--font-serif);
+  font-size: 0.88rem;
+  font-style: italic;
+  color: var(--muted);
+  margin-bottom: 1rem;
+}
+.exp-bullets { list-style: none; }
+.exp-bullets li {
+  position: relative;
+  padding-left: 1.2rem;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--muted);
+  margin-bottom: 0.35rem;
+}
+.exp-bullets li::before {
+  content: '›';
+  position: absolute; left: 0;
+  color: var(--teal);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.exp-tech-row { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 1rem; }
+
+/* ═══════════════════════════════════════════
+   MARQUEE STRIP
+═══════════════════════════════════════════ */
+.marquee-section {
+  background: var(--teal);
+  padding: 1rem 0;
+  overflow: hidden;
+  position: relative; z-index: 1;
+}
+.marquee-track {
+  display: flex; gap: 2.5rem;
+  animation: marquee 20s linear infinite;
+  white-space: nowrap;
+  width: max-content;
+}
+.marquee-item {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--bg);
+  font-weight: 500;
+  display: flex; align-items: center; gap: 1rem;
+}
+.marquee-dot { width: 4px; height: 4px; background: var(--bg); border-radius: 50%; flex-shrink: 0; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ═══════════════════════════════════════════
+   CONTACT
+═══════════════════════════════════════════ */
+.contact-bg { background: var(--bg); }
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+.contact-tagline {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-style: italic;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+}
+.contact-items { display: flex; flex-direction: column; gap: 1.2rem; }
+.contact-item {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1.2rem 1.4rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.contact-item:hover { border-color: var(--teal); transform: translateX(4px); }
+.ci-icon {
+  font-size: 1.2rem;
+  width: 40px; height: 40px; flex-shrink: 0;
+  background: rgba(0,229,196,0.07);
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+}
+.ci-label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 0.15rem;
+}
+.ci-val {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.contact-form { display: flex; flex-direction: column; gap: 1rem; }
+.form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+.form-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.form-input, .form-textarea {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 0.8rem 1rem;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color 0.2s;
+  resize: none;
+}
+.form-input:focus, .form-textarea:focus { border-color: var(--teal); }
+.form-input::placeholder, .form-textarea::placeholder { color: var(--dim); }
+.form-textarea { height: 120px; }
+.form-submit {
+  align-self: flex-start;
+  background: var(--teal);
+  color: var(--bg);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 0.85rem 2rem;
+  border: none;
+  border-radius: 2px;
+  cursor: none;
+  transition: background 0.2s, transform 0.2s;
+}
+.form-submit:hover { background: var(--teal2); transform: translateY(-2px); }
+
+/* ═══════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════ */
+footer {
+  position: relative; z-index: 1;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  padding: 2rem 3rem;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 1rem;
+}
+.footer-name {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.footer-copy {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--dim);
+}
+.footer-teal { color: var(--teal); }
+
+/* ═══════════════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════════════ */
+@keyframes fadeUp   { from { opacity:0; transform: translateY(24px); } to { opacity:1; transform: translateY(0); } }
+@keyframes fadeLeft { from { opacity:0; transform: translateX(24px); } to { opacity:1; transform: translateX(0); } }
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media (max-width: 900px) {
+  nav { padding: 1.2rem 1.5rem; }
+  .nav-links { display: none; }
+  .hero { padding: 7rem 1.5rem 4rem; }
+  .hero-stats { display: none; }
+  .section { padding: 4rem 1.5rem; }
+  .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  footer { padding: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Grid background -->
+<div class="grid-bg"></div>
+
+<!-- ══════════ NAV ══════════ -->
+<nav id="nav">
+  <div class="nav-logo"><span>./</span>priyanka-g</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero">
+  <div class="orb1 hero-bg-orb"></div>
+  <div class="orb2 hero-bg-orb"></div>
+
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Available for opportunities</div>
+    <h1 class="hero-name">Priyanka</h1>
+    <p class="hero-title">
+      <span class="typed" id="typed"></span><span class="cursor-blink"></span>
+    </p>
+    <p class="hero-desc">
+      Senior .NET Developer with 7+ years crafting enterprise web applications for UAE government agencies and global clients. Passionate about clean architecture, performant APIs, and delivering solutions that scale.
+    </p>
+    <div class="hero-actions">
+      <a href="#experience" class="btn-primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        View Experience
+      </a>
+      <a href="#contact" class="btn-secondary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>
+        Get in Touch
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="stat-num">7<span style="color:var(--teal);font-size:1.4rem">+</span></div>
+      <div class="stat-lbl">Years Experience</div>
+    </div>
+    <div class="hero-stat">
+      <div class="stat-num">5</div>
+      <div class="stat-lbl">Major Projects</div>
+    </div>
+    <div class="hero-stat">
+      <div class="stat-num">UAE</div>
+      <div class="stat-lbl">Current Base</div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ══════════ ABOUT ══════════ -->
+<section class="about-strip" id="about">
+  <div class="section">
+    <div class="about-grid">
+      <div class="reveal">
+        <div class="about-tag">About Me</div>
+        <h2 class="about-heading">Building robust systems that governments and businesses rely on.</h2>
+        <div class="about-body">
+          <p>I'm a .NET developer currently based in Abu Dhabi, UAE, specialising in enterprise web applications and RESTful API architecture. My work spans government portals, training management platforms, and high-throughput POS systems.</p>
+          <p>I bring strong expertise in the entire Microsoft .NET ecosystem — from ASP.NET Core to Entity Framework — combined with hands-on experience in modern infrastructure tools like Docker, Redis, and RabbitMQ.</p>
+        </div>
+      </div>
+      <div class="about-meta reveal">
+        <div class="meta-item">
+          <div class="meta-icon">📍</div>
+          <div>
+            <div class="meta-label">Location</div>
+            <div class="meta-value">Abu Dhabi, UAE</div>
+          </div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-icon">🎓</div>
+          <div>
+            <div class="meta-label">Education</div>
+            <div class="meta-value">B.E. Computer Science — Anna University</div>
+          </div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-icon">🏢</div>
+          <div>
+            <div class="meta-label">Current Employer</div>
+            <div class="meta-value">National Security Institute, Abu Dhabi</div>
+          </div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-icon">📜</div>
+          <div>
+            <div class="meta-label">Certification</div>
+            <div class="meta-value">Dot Net — ACCORD INFOMATRIX</div>
+          </div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-icon">⚙️</div>
+          <div>
+            <div class="meta-label">Methodology</div>
+            <div class="meta-value">Agile / Scrum · Waterfall · TDD</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ MARQUEE ══════════ -->
+<div class="marquee-section">
+  <div class="marquee-track" id="marquee">
+    <div class="marquee-item"><span>.NET Core</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>C# Development</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>ASP.NET MVC</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Web API</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Entity Framework</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>SQL Server</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Redis</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>RabbitMQ</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Docker</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Agile / Scrum</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>.NET Core</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>C# Development</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>ASP.NET MVC</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Web API</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Entity Framework</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>SQL Server</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Redis</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>RabbitMQ</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Docker</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Agile / Scrum</span><span class="marquee-dot"></span></div>
+  </div>
+</div>
+
+<!-- ══════════ SKILLS ══════════ -->
+<section class="skills-bg" id="skills">
+  <div class="section">
+    <div class="reveal">
+      <div class="section-label">Technical Skills</div>
+      <h2 class="section-title">What I <span class="teal">build</span> with.</h2>
+    </div>
+    <div class="skills-grid">
+
+      <div class="skill-card reveal">
+        <div class="skill-card-icon">⚡</div>
+        <div class="skill-card-title">Frameworks & Runtimes</div>
+        <div class="skill-tags">
+          <span class="tag">.NET Framework</span>
+          <span class="tag">ASP.NET Core</span>
+          <span class="tag">MVC 5</span>
+          <span class="tag">Web API 2</span>
+          <span class="tag">WCF</span>
+          <span class="tag">ADO.NET</span>
+          <span class="tag">Entity Framework 6</span>
+          <span class="tag">EF Core</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal">
+        <div class="skill-card-icon">💻</div>
+        <div class="skill-card-title">Languages</div>
+        <div class="skill-tags">
+          <span class="tag">C#</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">jQuery</span>
+          <span class="tag">LINQ</span>
+          <span class="tag">HTML5</span>
+          <span class="tag">CSS3</span>
+          <span class="tag">JSON / XML</span>
+          <span class="tag">SQL</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal">
+        <div class="skill-card-icon">🗄️</div>
+        <div class="skill-card-title">Database & Storage</div>
+        <div class="skill-tags">
+          <span class="tag">MS SQL Server</span>
+          <span class="tag">Oracle 11g</span>
+          <span class="tag">Stored Procedures</span>
+          <span class="tag">Views & Functions</span>
+          <span class="tag">SQL Tuning</span>
+          <span class="tag amber">Redis</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal">
+        <div class="skill-card-icon">🔧</div>
+        <div class="skill-card-title">Infrastructure & DevOps</div>
+        <div class="skill-tags">
+          <span class="tag amber">RabbitMQ</span>
+          <span class="tag amber">Docker</span>
+          <span class="tag">IIS 10</span>
+          <span class="tag">Git</span>
+          <span class="tag">TFS / VSTS</span>
+          <span class="tag">Windows Server 2016</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal">
+        <div class="skill-card-icon">🎨</div>
+        <div class="skill-card-title">Frontend & UI</div>
+        <div class="skill-tags">
+          <span class="tag">Kendo UI</span>
+          <span class="tag">Bootstrap 3</span>
+          <span class="tag">AngularJS</span>
+          <span class="tag">Razor Views</span>
+          <span class="tag">RDLC Reporting</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal">
+        <div class="skill-card-icon">🏗️</div>
+        <div class="skill-card-title">Architecture & Practices</div>
+        <div class="skill-tags">
+          <span class="tag">N-tier Architecture</span>
+          <span class="tag">OOP Design</span>
+          <span class="tag">RESTful APIs</span>
+          <span class="tag">OAuth / Auth</span>
+          <span class="tag">Agile / Scrum</span>
+          <span class="tag">TDD</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ EXPERIENCE ══════════ -->
+<section class="exp-bg" id="experience">
+  <div class="section">
+    <div class="reveal">
+      <div class="section-label">Work History</div>
+      <h2 class="section-title">Where I've <span class="teal">made an impact.</span></h2>
+    </div>
+
+    <div class="timeline">
+
+      <div class="exp-item reveal">
+        <div class="exp-dot"></div>
+        <div class="exp-period">Mar 2025 — Present</div>
+        <div class="exp-title">.NET Developer</div>
+        <div class="exp-company">National Security Institute — Abu Dhabi, UAE</div>
+        <div class="exp-project">Training Management System · Company Portal · Exam Portal</div>
+        <ul class="exp-bullets">
+          <li>Delivered three integrated applications for security training: an internal management portal, company enrollment portal, and an exam tracking system for guard assessments.</li>
+          <li>Designed graphical dashboards, metrics and BI reporting to support strategic decisions.</li>
+          <li>Implemented LINQ for querying and filtering complex data objects; created jQuery validation frameworks.</li>
+          <li>Developed MVC front-end with HTML5, CSS3, Bootstrap 3 and Razor views.</li>
+          <li>Introduced code quality documentation standards; managed version control via VSTS.</li>
+        </ul>
+        <div class="exp-tech-row">
+          <span class="tag">MVC 5</span><span class="tag">C#</span><span class="tag">Web API 2</span>
+          <span class="tag">Entity Framework 6</span><span class="tag">Kendo UI</span>
+          <span class="tag">RDLC</span><span class="tag">SQL Server 2016</span><span class="tag">IIS 10</span>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-dot"></div>
+        <div class="exp-period">Apr 2024 — Feb 2025</div>
+        <div class="exp-title">Software Engineer</div>
+        <div class="exp-company">Denovo Systems India Pvt Ltd — Chennai</div>
+        <div class="exp-project">Merchant Management System (POS Application)</div>
+        <ul class="exp-bullets">
+          <li>Built a web-based POS system for managing merchants, inventory, and transaction data at scale.</li>
+          <li>Developed RESTful APIs in .NET Core for seamless AngularJS frontend–backend communication.</li>
+          <li>Implemented RabbitMQ background tasks for asynchronous processing, improving reliability.</li>
+          <li>Used Redis caching to significantly improve system performance and responsiveness.</li>
+        </ul>
+        <div class="exp-tech-row">
+          <span class="tag">.NET Core</span><span class="tag">EF Core</span>
+          <span class="tag">AngularJS</span><span class="tag amber">RabbitMQ</span>
+          <span class="tag amber">Redis</span><span class="tag amber">Docker</span><span class="tag">Git</span>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-dot"></div>
+        <div class="exp-period">Dec 2020 — Dec 2023</div>
+        <div class="exp-title">.NET Developer</div>
+        <div class="exp-company">Teknip Technologies — Client: National Security Institute, UAE</div>
+        <div class="exp-project">Training Management System</div>
+        <ul class="exp-bullets">
+          <li>Maintained and enhanced a multi-module training management platform over three years for UAE government client.</li>
+          <li>Built face-to-face and virtual learning workflows, reducing significant administrative overhead.</li>
+          <li>Developed complex stored procedures and SQL performance tuning for data consistency.</li>
+        </ul>
+        <div class="exp-tech-row">
+          <span class="tag">MVC 5</span><span class="tag">C#</span><span class="tag">Web API 2</span>
+          <span class="tag">Kendo UI</span><span class="tag">SQL Server 2016</span>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-dot"></div>
+        <div class="exp-period">Apr 2020 — Dec 2020</div>
+        <div class="exp-title">.NET Developer</div>
+        <div class="exp-company">Teknip Technologies — Client: Ministry of Interior, UAE</div>
+        <div class="exp-project">Executive Support System Modernisation</div>
+        <ul class="exp-bullets">
+          <li>Built RESTful Web API with OAuth Token Authentication for a government legislative workflow solution.</li>
+          <li>API consumed by both an MVC web application and an iPad application.</li>
+          <li>Delivered BI dashboards and graphical reporting for governmental staff using Agile methodology.</li>
+        </ul>
+        <div class="exp-tech-row">
+          <span class="tag">MVC 5</span><span class="tag">C#</span><span class="tag">Oracle 11g</span>
+          <span class="tag">OAuth</span><span class="tag">Kendo UI</span><span class="tag">Agile</span>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-dot"></div>
+        <div class="exp-period">Apr 2019 — Apr 2020</div>
+        <div class="exp-title">.NET Developer</div>
+        <div class="exp-company">Teknip Technologies — Client: Okool Staffing, UAE</div>
+        <div class="exp-project">PACE — ERP Application</div>
+        <ul class="exp-bullets">
+          <li>Developed HRMS, Finance, Procurement and Employee Self-Service modules for a multi-disciplinary ERP system.</li>
+          <li>Conducted requirements analysis, bug fixing and new feature development across sprint cycles.</li>
+        </ul>
+        <div class="exp-tech-row">
+          <span class="tag">.NET</span><span class="tag">TFS</span><span class="tag">SSMS</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CONTACT ══════════ -->
+<section class="contact-bg" id="contact">
+  <div class="section">
+    <div class="reveal">
+      <div class="section-label">Contact</div>
+      <h2 class="section-title">Let's <span class="teal">work together.</span></h2>
+    </div>
+    <div class="contact-grid">
+      <div class="reveal">
+        <p class="contact-tagline">
+          Open to new opportunities, collaborations, and interesting engineering challenges. Don't hesitate to reach out.
+        </p>
+        <div class="contact-items">
+          <div class="contact-item">
+            <div class="ci-icon">✉️</div>
+            <div>
+              <div class="ci-label">Email</div>
+              <div class="ci-val">priyankagopalakrishnan1730@gmail.com</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="ci-icon">📱</div>
+            <div>
+              <div class="ci-label">Mobile</div>
+              <div class="ci-val">+91 7904827445</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="ci-icon">📍</div>
+            <div>
+              <div class="ci-label">Location</div>
+              <div class="ci-val">Abu Dhabi, UAE</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <div class="footer-name">Priyanka G <span style="color:var(--dim)">— .NET Developer</span></div>
+  <div class="footer-copy">Built with <span class="footer-teal">♥</span> · © 2026</div>
+</footer>
+
+<!-- ══════════ SCRIPTS ══════════ -->
+<script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+function animateCursor() {
+  cursor.style.left = mx + 'px';
+  cursor.style.top  = my + 'px';
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) *.12;
+  ring.style.left = rx + 'px';
+  ring.style.top  = ry + 'px';
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+document.querySelectorAll('a, button, .skill-card, .meta-item, .contact-item, .exp-item').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.width = '18px'; cursor.style.height = '18px';
+    ring.style.width = '50px'; ring.style.height = '50px'; ring.style.opacity = '0.3';
+  });
+  el.addEventListener('mouseleave', () => {
+    cursor.style.width = '10px'; cursor.style.height = '10px';
+    ring.style.width = '36px'; ring.style.height = '36px'; ring.style.opacity = '0.5';
+  });
+});
+
+// Nav scroll effect
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// Typing effect
+const phrases = [
+  '.NET Developer',
+  'C# Engineer',
+  'API Architect',
+  'Enterprise Developer',
+  'Full-stack Engineer'
+];
+let pi = 0, ci = 0, deleting = false;
+const typedEl = document.getElementById('typed');
+function type() {
+  const current = phrases[pi];
+  if (!deleting) {
+    typedEl.textContent = current.substring(0, ci + 1);
+    ci++;
+    if (ci === current.length) { deleting = true; setTimeout(type, 1800); return; }
+  } else {
+    typedEl.textContent = current.substring(0, ci - 1);
+    ci--;
+    if (ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; }
+  }
+  setTimeout(type, deleting ? 55 : 90);
+}
+type();
+
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      const siblings = Array.from(entry.target.parentElement.querySelectorAll('.reveal'));
+      const idx = siblings.indexOf(entry.target);
+      setTimeout(() => entry.target.classList.add('visible'), idx * 80);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
